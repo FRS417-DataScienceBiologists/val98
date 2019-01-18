@@ -16,10 +16,22 @@ spring_5 <- c(31.85, 31.40, 29.30)
 spring_6 <- c(30.20, 30.65, 29.75)
 spring_7 <- c(32.90, 32.50, 32.80)
 spring_8 <- c(36.80, 36.45, 33.15)
+spring_1
 ```
 
 ```{r}
-springs <- c(spring_1, spring_2. spring_3, spring_4. spring)
+springs <- c(spring_1, spring_2, spring_3, spring_4, spring_5, spring_6, spring_7, spring_8)
+springs
 ```
+```{r}
+#by row = true 
+springs_matrix <-matrix(springs, nrow = 8, byrow = T)
+springs_matrix
+```
+
+```{r}
+#do HW1. go back to practice problem from 2.1 and read the dataframe section. just write the answers directy on the rmarkdown file in the folder with the other lab stuff and put your name at the top.  
+```
+
 
 
