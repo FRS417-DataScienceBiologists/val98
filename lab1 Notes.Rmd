@@ -1,0 +1,79 @@
+---
+title: "Lab 2"
+output: html_document
+---
+```{r}
+sara <- 15
+sara
+```
+
+```{r}
+my_numeric <- 42
+my_integer <- 2L #adding an L automatically denotes an integer
+my_character <- "universe"
+my_logical <- FALSE
+my_complex <- 2+4i
+```
+```{r}
+class(sara)
+```
+```{r}
+## tp create new vector with 3 values
+## vectors dont always have to be numeric
+## c is like 'combine'
+my_vector <- c(10, 20, 30)
+my_vector
+```
+```{r}
+## vectors can only hold data of the same type. cant combine to make a vectr with nmerics and characters
+my_dates <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
+my_dates
+```
+```{r}
+# you can name the elements of the vector as well
+#use the names() function included
+names(my_dates) <- c("Good Day", "Bad Day", "Good Day", "Bad Day", "Good Day")
+my_dates
+# but this isn't really effiencient if you have to individually assign the elements one by one. 
+```
+
+```{r}
+# a more effiecient way would be to use index
+my_dates_GoodDays <- my_dates[c(1,3,5)]
+my_dates_GoodDays
+```
+
+## Practice
+Let's create a new numeric vector.
+```{r}
+new_vector <- 1:100
+new_vector[new_vector == 15] #we can ask to select only the value 15
+new_vector
+```
+
+We can evaluate all numerics in our vector to determine which has a value of 15. Try some other values to experiment.
+```{r}
+new_vector == 100
+```
+
+Now we are getting somewhere, because we can also use <, >, ==, <==, etc. Try another function to experiment.
+```{r}
+new_vector < 10
+```
+
+Using the `&` symbol allows us to refine our elements of interest.
+```{r}
+new_vector < 10 & new_vector > 2
+```
+
+If you use `[]` then you only get the values, not the logical evaluation of the entire vector.
+```{r}
+new_vector[new_vector < 10 & new_vector > 2]
+new_vector
+## the '&' operator means it must match the conditions. '|' is like 'or'
+new_vector[new_vector <= 10 | new_vector >= 2]
+```
+```{r}
+# commit is like a local save that doesnt overwrite other versions-never press ammend previous versions 
+```
+
