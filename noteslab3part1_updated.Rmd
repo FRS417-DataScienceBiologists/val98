@@ -1,0 +1,82 @@
+---
+title: "Labs 3"
+author: "Valerie Chau"
+date: "Winter 2019"
+output:
+  html_document:
+    keep_md: yes
+    theme: spacelab
+    toc: yes
+    toc_float: yes
+---
+```{r}
+## should know how to use rmarkdow
+## can knit and post
+## matrix vs vectors
+## arithmetic 
+
+## knitting is making the rmarkdown into what ever specified format #to knit an md file, press output options from settings
+## go to the advanced tab and then check the keep markdown source file option and then click out and press knit
+```
+```{r}
+#importing data matrixes
+getwd()
+```
+```{r}
+# always load tidyverse before you start
+# if you need to install it, first do:
+install.packages("tidyverse")
+library("tidyverse")
+```
+
+```{r}
+#use readr to read values of read_csv
+#(how to get to csv file)
+fish <- readr::read_csv("/Users/clmuser/Desktop/class_files-master/Gaeta_etal_CLC_data.csv")
+```
+
+```{r}
+##summary functions
+names(fish)
+```
+
+```{r}
+##just returns first few rows and data
+head(fish)
+```
+
+```{r}
+#returns a summary of the data, some stats for each column
+summary(fish)
+```
+
+```{r}
+#glimpse gives observations, names, class, ect
+#generally most helpful for most
+glimpse(fish)
+```
+```{r}
+#Dplyr:filter() command very useful 
+#syntax almost identical
+#looks through dataframe and pulls out rows that match specified data
+
+names(fish)
+```
+
+```{r}
+# data, vector/column == specific thing
+filter(fish, lakeid == "AL" )
+```
+
+```{r}
+#method of filtering by scale length grater than 350
+filter(fish, length>= 350 )
+```
+
+```{r}
+filter(fish, length ==167|length==175)
+```
+```{r}
+filter(fish, !length==175)
+```
+
