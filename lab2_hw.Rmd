@@ -25,7 +25,7 @@ msleep
 
 1. From which publication are these data taken from? Don't do an internet search; show the code that you would use to find out in R.
 ```{r}
-#get_publication
+?msleep
 
 ```
 
