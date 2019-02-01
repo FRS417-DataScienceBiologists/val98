@@ -26,6 +26,7 @@ msleep
 1. From which publication are these data taken from? Don't do an internet search; show the code that you would use to find out in R.
 ```{r}
 #get_publication
+
 ```
 
 
@@ -51,21 +52,31 @@ summary(msleep)
 3. Make a new data frame focused on body weight, but be sure to indicate the common name and genus of each mammal.  
 
 ```{r}
-msleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt)
-msleep.sub
+#msleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt)
+#msleep.sub
+
+newmSleep <- subset(msleep,  select=c(name, genus, bodywt))
+newmSleep
+
 ```
 
 
 4. We are interested in two groups; small and large mammals. Let's define small as less than or equal to 1kg body weight and large as greater than or equal to 200kg body weight. For our study, we are interested in body weight and sleep total Make two new dataframes (large and small) based on these parameters.  
 
 ```{r}
-largemsleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt, msleep$sleep_total)
-largemsleep.sub
-filter(largemsleep.sub, msleep$bodywt>=200)
+#largemsleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt, msleep$sleep_total)
+#largemsleep.sub
+#filter(largemsleep.sub, msleep$bodywt>=200)
 
-smallmsleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt, msleep$sleep_total)
-smallmsleep.sub
-filter(smallmsleep.sub, msleep$bodywt <200)
+#smallmsleep.sub = tibble(msleep$name, msleep$genus, msleep$bodywt, msleep$sleep_total)
+#smallmsleep.sub
+#filter(smallmsleep.sub, msleep$bodywt <200)
+
+smallmSleep <- subset(msleep, bodywt < 200, select=c(name, genus, bodywt, sleep_total))
+smallmSleep
+largemSleep <- subset(msleep, bodywt >= 200, select=c(name, genus, bodywt, sleep_total))
+largemSleep
+
 ```
 
 
@@ -74,19 +85,26 @@ filter(smallmsleep.sub, msleep$bodywt <200)
 5. Let's try to figure out if large mammals sleep, on average, longer than small mammals. What is the average sleep duration for large mammals as we have defined them?
 ```{r}
 #mean(large$sleep_total)
-largeMean <- mean(largemsleep.sub$`msleep$sleep_total`)
-smallMean <- mean(smallmsleep.sub$`msleep$sleep_total`)
+largeMean <- mean(largemSleep$sleep_total)
 largeMean
-smallMean
+
 
 ```
 
 6. What is the average sleep duration for small mammals as we have defined them?
+```{r}
+smallMean <- mean(smallmSleep$sleep_total)
+smallMean
+```
 
 
 
 7. Which animals sleep at least 18 hours per day? Be sure to show the name, genus, order, and sleep total.  
 
-filter(msleep, )
+```{r}
+newmSleep <- subset(msleep, sleep_total >= 18, select=c(name, genus, order, sleep_total))
+newmSleep
+```
+
 
 ## Push your final code to [GitHub](https://github.com/FRS417-DataScienceBiologists)
