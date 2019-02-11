@@ -1,6 +1,6 @@
 ---
 title: "Lab 4 Homework"
-author: "Joel Ledford"
+author: "Valerie Chau"
 date: "Winter 2019"
 output:
   html_document:
