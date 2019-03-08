@@ -4,8 +4,8 @@ author: "Valerie Chau"
 date: "Winter2019"
 output:
   html_document:
+    keep_md: yes
     theme: spacelab
-    toc: no
 ---
 
 ## Instructions
@@ -13,7 +13,7 @@ Answer the following questions and complete the exercises in RMarkdown. Please e
 
 ## Load the tidyverse
 ```{r}
-install.packages("tidyverse")
+#install.packages("tidyverse")
 library("tidyverse")
 ```
 
