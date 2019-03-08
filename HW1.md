@@ -46,7 +46,7 @@ Answer the following questions and complete the exercises in RMarkdown. Please e
 ```
 
 ```
-## [1] 16
+##  [1] 16
 ```
 
 
