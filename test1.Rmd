@@ -1,0 +1,186 @@
+---
+title: "Bee Data"
+output: 
+  html_document: 
+    keep_md: yes
+---
+##Questions:
+1. There’s a dataset in the folder called, “Bee colony Census Data by County”  and we wanted help in merging the data sets. 
+
+
+2. Also in the “Bee colony Census Data by County” data set, there’s a column named “value” and we’ve looked in the glossary but we couldn’t find any info on it. We were wondering if you knew what we could use the “value” column for or if it’s even worth using anything in the ”Bee colony Census Data by County” data set. 
+
+3. I'm having trouble geting all the columns in the object "bee2" Renamed. It seems like it won't recognize the variables original names even before I've renamed them. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+#install.packages("tidyverse")
+#install.packages("skimr")
+#install.packages("RColorBrewer")
+library("RColorBrewer")
+library(tidyverse)
+library(skimr)
+```
+
+
+```{r}
+#if you guys are having trouble with viewing it, move the data to the same folder. ie move the rmd file to the finley data folder or move the excel sheet to the "animal-master" folder
+bee <- 
+  readr::read_csv("bee2.csv")
+bee
+names(bee)
+```
+
+```{r}
+
+bee <- 
+  bee %>% 
+  dplyr::rename(
+          year        = "Year",
+          season      = "Season",
+          state       = "State",
+          totAnnualLoss = "Total Annual Loss",
+          beekeepers = "Beekeepers",
+          beekeepersExclusive = "Beekeepers Exclusive to State",
+          colonies = "Colonies",
+          coloniesExclusive =  "Colonies Exclusive to State" 
+          )
+
+names(bee)
+```
+
+#Beekeepers in each state as graph
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=state, y= beekeepers, fill = state))+
+  geom_col()+
+  labs(title = "Number of Beekeepers per State in 2016-2017",
+       x = "State",
+       y = "Number of Beekeepers Hired by State")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=.8, face="bold"))
+```
+#States with highest number of beekeeprs
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(beekeepers))
+```
+
+#Interesting: Ohio
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=state, y= beekeepersExclusive, fill = state))+
+  geom_col()+
+  labs(title = "Percentage of Beekeepers Hired Exclusively by State in 2016-2017",
+       x = "State",
+       y = "Pecent of Exclusive Beekeepers Hired by State")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=.8, face="bold"))+
+  scale_y_log10()+
+  coord_flip()
+  
+```
+#graph indicating california trend in beekeeper stats
+```{r}
+bee %>% 
+  filter(state=="California") %>% 
+  ggplot(aes(x=beekeepers, y= colonies, color = year))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Number of Bee Colonies vs Number of Beekeepers",
+       x = "Number of Beekeepers",
+       y = "Number of Bee Colonies")+ 
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=13),
+          plot.title = element_text(lineheight=.8, face="bold"))
+  
+```
+
+
+```{r}
+
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(colonies))
+
+```
+
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(totAnnualLoss))
+```
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(totAnnualLoss)
+```
+
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(beekeepers))
+```
+
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(beekeepersExclusive))
+```
+#seeing Which States have the highest number of colonies per beekeeper
+```{r}
+bee %>%
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(coloniesPerKeeper))
+```
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color=state))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Ratio of Colonies:Beekeepers vs Total Annual Loss in 2016-2017",
+       x = "Total Annual Loss",
+       y = "Ratio of Colonies to Beekeepers")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          plot.title = element_text(lineheight=.8, face="bold"))
+
+```
+
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(state == "Oklahoma") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, fill = year))+
+  geom_col()+
+  labs(title = "Ratio of Colonies:Beekeepers vs Total Annual Loss in Oklahoma",
+       x = "Total Annual Loss",
+       y = "Ratio of Colonies to Beekeepers")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=0.8, face="bold"))+
+  facet_grid(. ~ year)+
+  scale_fill_brewer(palette = "Dark2")
+
+```
+
+
+#Main Takeway: Total Annual Bee Loss isn't dependent on the number of beekeepers. For example Mississippi and California have some of the higest ratios of colonies:beekeepers yet still have lower total annual loss values compared to some states like Oklahoma, which has the highest total annual loss for the most recent year and has one of the lowest colony:keeper ratios out there. 
