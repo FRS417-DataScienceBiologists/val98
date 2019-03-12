@@ -16,9 +16,9 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 ```{r}
-#install.packages("tidyverse")
-#install.packages("skimr")
-#install.packages("RColorBrewer")
+install.packages("tidyverse")
+install.packages("skimr")
+install.packages("RColorBrewer")
 library("RColorBrewer")
 library(tidyverse)
 library(skimr)
@@ -146,19 +146,22 @@ bee %>%
   filter(year=="2016/17") %>% 
   arrange(desc(coloniesPerKeeper))
 ```
+#incorporating ratio into graphs
 ```{r}
 bee %>% 
   mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
   filter(year=="2016/17") %>% 
-  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color=state))+
-  geom_jitter()+
+  ggplot(aes(x=coloniesPerKeeper, y= totAnnualLoss, color=state))+
+  geom_jitter(shape=18, alpha=.8)+
   geom_smooth(method=lm, se=FALSE)+
-  labs(title = "Ratio of Colonies:Beekeepers vs Total Annual Loss in 2016-2017",
+  labs(title = " Ratio of Colonies to Beekeepers vs Total Annual Loss in 2016-2017",
        x = "Total Annual Loss",
-       y = "Ratio of Colonies to Beekeepers")+
+       y = "Colonies  /  Beekeepers")+
    theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text.y = element_text(angle = 60, hjust=1),
           axis.text=element_text(size=8),
           axis.title=element_text(size=10),
+          legend.position="none",
           plot.title = element_text(lineheight=.8, face="bold"))
 
 ```
@@ -184,3 +187,65 @@ bee %>%
 
 
 #Main Takeway: Total Annual Bee Loss isn't dependent on the number of beekeepers. For example Mississippi and California have some of the higest ratios of colonies:beekeepers yet still have lower total annual loss values compared to some states like Oklahoma, which has the highest total annual loss for the most recent year and has one of the lowest colony:keeper ratios out there. 
+
+#relationship between number of beekepers hired and bee loss
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=beekeepers, y=totAnnualLoss, color = state))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Annual Loss vs Number of Beekeepers in 2016-2017",
+       x = "Number of Beekeepers Hired by State",
+       y = "Total Annual Loss of Bee Colonies")+
+   theme( axis.text.x = element_text(angle = 60, hjust=0.8),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=0.8, face="bold"))+
+  scale_fill_brewer(palette = "Dark2")
+
+```
+```{r}
+bee %>% 
+  #select(country, commname, sciname, year, catch) %>% 
+  arrange(desc(totAnnualLoss))
+bee
+```
+
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(state == "Oklahoma" | state=="District of Columbia") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color = year))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Anuual Loss vs Ratio of Colonies to Beekeepers",
+       x = "Total Annual Loss",
+       y = "Colonies : Beekeepers")+ 
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=13),
+          plot.title = element_text(lineheight=.8, face="bold"))+
+  facet_grid(. ~ state)+
+  scale_fill_brewer(palette = "Dark1")
+```
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(state == "California" | state== "Massachusetts") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color = year))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Anuual Loss vs Ratio of Colonies to Beekeepers",
+       x = "Total Annual Loss",
+       y = "Colonies : Beekeepers")+ 
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text.y = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=13),
+          plot.title = element_text(lineheight=.8, face="bold"))+
+  facet_grid(. ~ state)+
+  scale_fill_brewer(palette = "Dark1")
+```
+
