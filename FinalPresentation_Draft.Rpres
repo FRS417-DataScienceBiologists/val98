@@ -1,0 +1,184 @@
+FinalPresentation_Draft
+========================================================
+author: ISHA, JADE, VALERIE
+date: 
+autosize: true
+
+First Slide
+========================================================
+
+For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Source: <https://support.rstudio.com/hc/en-us/articles/200486468>.
+
+Slide With Code
+========================================================
+
+```{r}
+summary(cars)
+```
+
+Slide With Plot
+========================================================
+
+```{r, echo=FALSE}
+plot(cars)
+```
+
+========================================================
+
+<font size=80> 
+<center>
+
+BUT WHY ARE BEE POPULATIONS DESCREASING?
+</center>
+</font> 
+
+
+
+========================================================
+
+<center>
+<font size=80> 
+
+Let's investigate one posible reason:
+       Beekeepers
+
+</font> 
+</center>
+
+Here's How Many Beekeepers Were Employed by Each State in 2016-2017
+========================================================
+```{r, echo=FALSE}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=state, y= beekeepers, fill = state))+
+  geom_col()+
+  labs(title = "Number of Beekeepers per State in 2016-2017",
+       x = "State",
+       y = "Number of Beekeepers Hired by State")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=.8, face="bold"))
+```
+
+Pennsylvania and Virginia Are states with higher bee loss 
+========================================================
+- Pennsylviania is ranked #16 in highest total annual bee loss
+- Virginia is ranked #19
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  arrange(desc(totAnnualLoss))
+```
+
+
+In general: there is no relationship
+========================================================
+
+```{r}
+bee %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=beekeepers, y=totAnnualLoss, color = state))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Annual Loss vs Number of Beekeepers in 2016-2017",
+       x = "Number of Beekeepers Hired by State",
+       y = "Total Annual Loss of Bee Colonies")+
+   theme( axis.text.x = element_text(angle = 60, hjust=0.8),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=0.8, face="bold"))+
+  scale_fill_brewer(palette = "Dark2")
+
+```
+
+What really matters is the ratio of beekeepers to colonies
+========================================================
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(year=="2016/17") %>% 
+  ggplot(aes(x=coloniesPerKeeper, y= totAnnualLoss, color=state))+
+  geom_jitter(shape=18, alpha=.8)+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = " Ratio of Colonies to Beekeepers vs Total Annual Loss in 2016-2017",
+       x = "Total Annual Loss",
+       y = "Colonies  /  Beekeepers")+
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text.y = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=10),
+          legend.position="none",
+          plot.title = element_text(lineheight=.8, face="bold"))
+
+```
+Furthermore...
+========================================================
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(state == "Oklahoma" | state=="District of Columbia") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color = year))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Anuual Loss vs Ratio of Colonies to Beekeepers",
+       x = "Total Annual Loss",
+       y = "Colonies : Beekeepers")+ 
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=13),
+          plot.title = element_text(lineheight=.8, face="bold"))+
+  facet_grid(. ~ state)+
+  scale_fill_brewer(palette = "Dark1")
+```
+District of Columbia and Oklahoma are two states with some of the highest total annual loss.
+
+
+On the other hand...
+========================================================
+```{r}
+bee %>% 
+  mutate(coloniesPerKeeper = colonies/beekeepers) %>% 
+  filter(state == "California" | state== "Massachusetts") %>% 
+  ggplot(aes(x=totAnnualLoss, y= coloniesPerKeeper, color = year))+
+  geom_jitter()+
+  geom_smooth(method=lm, se=FALSE)+
+  labs(title = "Total Anuual Loss vs Ratio of Colonies to Beekeepers",
+       x = "Total Annual Loss",
+       y = "Colonies : Beekeepers")+ 
+   theme( axis.text.x = element_text(angle = 60, hjust=1),
+          axis.text.y = element_text(angle = 60, hjust=1),
+          axis.text=element_text(size=8),
+          axis.title=element_text(size=13),
+          plot.title = element_text(lineheight=.8, face="bold"))+
+  facet_grid(. ~ state)+
+  scale_fill_brewer(palette = "Dark1")
+```
+California and Massachusetts are two states with typically low total annual loss. 
+We can see that once again, there is no linear regression line
+
+
+Conclusion
+========================================================
+<center>
+<font size=80> 
+The number of beekeepers being hired is not related to rising rates colony collapse
+But here are some other factors that are likely to be:
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+Source: <insert link to source here>.
+</font> 
+</center>
+
+
+
